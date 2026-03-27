@@ -1,0 +1,256 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MemoryType {
+  fact
+  preference
+  intent
+  goal
+  temporary
+  decision
+  context
+  technical
+}
+
+enum EntityType {
+  person
+  organization
+  location
+  technology
+  project
+  product
+  other
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  passwordHash String   @map("password_hash")
+  memoryCount  Int      @default(0) @map("memory_count")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  refreshTokens RefreshToken[]
+  apiKeys       ApiKey[]
+  memories      Memory[]
+  lookupLogs    LookupLog[]
+  integrations  Integration[]
+  userWebhooks  UserWebhook[]
+  entities      Entity[]
+  relationships Relationship[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique @map("token_hash")
+  familyId  String   @map("family_id")
+  userId    String   @map("user_id")
+  used      Boolean  @default(false)
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+  @@map("refresh_tokens")
+}
+
+model ApiKey {
+  id        String    @id @default(uuid())
+  name      String
+  keyHash   String    @unique @map("key_hash")
+  keyPrefix String    @map("key_prefix")
+  userId    String    @map("user_id")
+  lastUsed  DateTime? @map("last_used")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model Memory {
+  id                String     @id @default(uuid())
+  userId            String     @map("user_id")
+  qdrantId          String     @unique @map("qdrant_id")
+  content           String
+  topicKey          String?    @map("topic_key")
+  category          String?
+  memoryType        MemoryType @default(fact) @map("memory_type")
+  durability        Float      @default(0.5)
+  confidence        Float      @default(0.8)
+  importance        Float      @default(0.5)
+  confirmationCount Int        @default(1) @map("confirmation_count")
+  lastConfirmedAt   DateTime   @default(now()) @map("last_confirmed_at")
+  isSensitive       Boolean    @default(false) @map("is_sensitive")
+  supersededById    String?    @map("superseded_by_id")
+  expiresAt         DateTime?  @map("expires_at")
+  platform          String?    // cursor | claude | chatgpt | copilot | gemini | manual
+  sourceContext     String?    @map("source_context") // 1-2 sentence conversation context for richer embeddings
+  searchTags        String?    @map("search_tags")
+  captureId         String?    @map("capture_id") // correlation ID from capture request
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  supersededBy    Memory?          @relation("Supersedes", fields: [supersededById], references: [id])
+  supersedes      Memory[]         @relation("Supersedes")
+  entityMentions  EntityMention[]
+
+  @@index([userId])
+  @@index([topicKey])
+  @@index([userId, expiresAt])
+  @@index([userId, category])
+  @@index([userId, platform])
+  @@map("memories")
+}
+
+model Integration {
+  id         String    @id @default(uuid())
+  userId     String    @map("user_id")
+  platform   String    // cursor | claude | chatgpt | copilot | gemini
+  isActive   Boolean   @default(false) @map("is_active")
+  lastSyncAt DateTime? @map("last_sync_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform])
+  @@index([userId])
+  @@map("integrations")
+}
+
+model LookupLog {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  memoryIds  String[] @map("memory_ids")
+  topic      String
+  wasHelpful Boolean? @map("was_helpful")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("lookup_logs")
+}
+
+model UserWebhook {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  url       String
+  secret    String   // HMAC-SHA256 signing secret (shown once)
+  events    String[] // e.g. ["memory.captured", "memory.deleted"]
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
+
+  @@index([userId])
+  @@map("user_webhooks")
+}
+
+model WebhookDelivery {
+  id           String    @id @default(uuid())
+  webhookId    String    @map("webhook_id")
+  event        String
+  payload      Json
+  statusCode   Int?      @map("status_code")
+  success      Boolean   @default(false)
+  attemptCount Int       @default(1) @map("attempt_count")
+  nextRetryAt  DateTime? @map("next_retry_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  webhook UserWebhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@map("webhook_deliveries")
+}
+
+model Entity {
+  id          String          @id @default(uuid())
+  userId      String          @map("user_id")
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  aliases     String[]        @default([])
+  entityType  EntityType      @map("entity_type")
+  description String?
+  mentions    EntityMention[]
+  fromRels    Relationship[]  @relation("fromEntity")
+  toRels      Relationship[]  @relation("toEntity")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@unique([userId, name, entityType])
+  @@index([userId])
+  @@map("entities")
+}
+
+model EntityMention {
+  id        String   @id @default(uuid())
+  entityId  String   @map("entity_id")
+  entity    Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  memoryId  String   @map("memory_id")
+  memory    Memory   @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([entityId, memoryId])
+  @@index([memoryId])
+  @@map("entity_mentions")
+}
+
+model Relationship {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fromEntityId   String   @map("from_entity_id")
+  fromEntity     Entity   @relation("fromEntity", fields: [fromEntityId], references: [id], onDelete: Cascade)
+  toEntityId     String   @map("to_entity_id")
+  toEntity       Entity   @relation("toEntity", fields: [toEntityId], references: [id], onDelete: Cascade)
+  relationType   String   @map("relation_type")
+  confidence     Float    @default(0.8)
+  sourceMemoryId String?  @map("source_memory_id")
+  validFrom      DateTime? @map("valid_from")
+  validUntil     DateTime? @map("valid_until")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, fromEntityId, toEntityId, relationType])
+  @@index([userId])
+  @@index([userId, validFrom, validUntil])
+  @@map("relationships")
+}
+
+model CaptureResult {
+  captureId String   @id @map("capture_id")
+  userId    String   @map("user_id")
+  saved     Int
+  skipped   Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("capture_results")
+}
+
+model SystemConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_config")
+}

@@ -1,0 +1,29 @@
+{
+  "name": "convomem-sdk",
+  "version": "0.1.0",
+  "description": "Official JavaScript SDK for the ConvoMem memory API",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "files": [
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": ["convomem", "memory", "ai", "mcp", "context", "llm"],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/convomem/convomem"
+  },
+  "homepage": "https://github.com/convomem/convomem/tree/main/packages/sdk#readme",
+  "bugs": {
+    "url": "https://github.com/convomem/convomem/issues"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

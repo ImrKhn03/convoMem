@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ConvoMem</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h1>ConvoMem</h1>
+    <span class="status-dot" id="statusDot"></span>
+  </div>
+
+  <div class="section">
+    <label>API Key</label>
+    <input type="password" id="apiKey" placeholder="sk-cm-..." />
+  </div>
+
+  <div class="section">
+    <label>API Base URL</label>
+    <input type="text" id="baseUrl" placeholder="http://localhost:8000" />
+  </div>
+
+  <div class="toggles">
+    <div class="toggle-row">
+      <span>ConvoMem Enabled</span>
+      <label class="switch">
+        <input type="checkbox" id="enabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span>Auto-capture conversations</span>
+      <label class="switch">
+        <input type="checkbox" id="captureEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span>Inject context before sending</span>
+      <label class="switch">
+        <input type="checkbox" id="injectEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="save" class="btn-primary">Save</button>
+    <button id="testConn" class="btn-secondary">Test Connection</button>
+  </div>
+
+  <div id="statusMsg" class="status-msg"></div>
+  <div id="memoryCount" class="memory-count"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

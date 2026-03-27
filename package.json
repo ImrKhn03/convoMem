@@ -1,0 +1,12 @@
+{
+  "name": "convomem",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "start": "npm start --workspace=apps/api",
+    "test": "npm test --workspace=apps/api",
+    "lint": "npm run lint --workspace=apps/api"
+  }
+}

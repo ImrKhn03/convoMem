@@ -1,0 +1,42 @@
+{
+  "name": "convomem-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for ConvoMem memory — auto-configures Claude Desktop, VS Code, Cursor, Claude Code, and OpenCode",
+  "main": "./src/index.js",
+  "bin": {
+    "convomem-mcp": "./src/index.js",
+    "convomem-mcp-setup": "./src/setup.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "setup": "node src/setup.js",
+    "postinstall": "echo '\\n  Run: npx convomem-mcp-setup --api-key sk-ls-...\\n'"
+  },
+  "files": [
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "convomem",
+    "mcp",
+    "memory",
+    "ai",
+    "claude",
+    "cursor"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/convomem/convomem"
+  },
+  "homepage": "https://github.com/convomem/convomem/tree/main/packages/mcp#readme",
+  "bugs": {
+    "url": "https://github.com/convomem/convomem/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "zod": "^3.22.0"
+  }
+}

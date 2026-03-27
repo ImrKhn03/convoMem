@@ -1,0 +1,18 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+dist/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+coverage/
+.nyc_output/
+prisma/migrations/
+*.sqlite
+.prisma/
+
+# Local markdown files (development guides)
+CLAUDE.md
+*_STATUS.md

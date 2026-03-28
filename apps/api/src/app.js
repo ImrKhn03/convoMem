@@ -68,7 +68,7 @@ app.use(
   })
 );
 
-// Swagger documentation
+// API documentation
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',

@@ -13,7 +13,6 @@ const { errorHandler } = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth.routes');
 const memoriesRoutes = require('./routes/memories.routes');
 const statsRoutes = require('./routes/stats.routes')
-const integrationsRoutes = require('./routes/integrations.routes')
 const userWebhooksRoutes = require('./routes/user-webhooks.routes');
 const userRoutes = require('./routes/user.routes');
 const extensionRoutes = require('./routes/extension.routes');
@@ -108,7 +107,6 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/memories', memoriesRoutes);
 app.use('/api/stats', statsRoutes);
-app.use('/api/integrations', integrationsRoutes);
 app.use('/api/user-webhooks', userWebhooksRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/extension', extensionRoutes);

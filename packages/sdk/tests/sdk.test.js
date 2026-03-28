@@ -571,20 +571,6 @@ describe('Graph methods', () => {
     await expect(sdk.searchEntities('')).rejects.toThrow('query is required');
   });
 
-  test('getGraph sends GET /api/entities/graph', async () => {
-    mockFetch({ entities: [], relationships: [] });
-
-    const sdk = new ConvoMem({ apiKey: 'sk-cm-test' });
-    const result = await sdk.getGraph({ entityId: 'ent-1', depth: 2 });
-
-    expect(result.entities).toEqual([]);
-    expect(result.relationships).toEqual([]);
-    const [url] = global.fetch.mock.calls[0];
-    expect(url).toContain('/api/entities/graph');
-    expect(url).toContain('entityId=ent-1');
-    expect(url).toContain('depth=2');
-  });
-
   test('deleteEntity sends DELETE /api/entities/:id', async () => {
     global.fetch = jest.fn().mockReturnValue(
       Promise.resolve({ ok: true, status: 204, json: () => Promise.resolve(null) })

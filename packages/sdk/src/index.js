@@ -193,16 +193,6 @@ class ConvoMem {
   }
 
   /**
-   * Get the entity/relationship graph.
-   *
-   * @param {{ entityId?: string, depth?: number }} [opts]
-   * @returns {Promise<{ entities: Array<object>, relationships: Array<object> }>}
-   */
-  async getGraph(opts = {}) {
-    return this._client.get('/api/entities/graph', opts);
-  }
-
-  /**
    * Delete an entity by ID.
    *
    * @param {string} id   UUID of the entity.

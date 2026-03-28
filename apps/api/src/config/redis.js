@@ -1,15 +1,10 @@
 'use strict';
 
-/**
- * In-memory Redis-compatible client.
- * Replaces ioredis/Redis so the app needs no Redis server.
- * Supports the subset of commands used by this codebase.
- */
+const Redis = require('ioredis');
+
 class MemoryRedis {
   constructor() {
-    /** @type {Map<string, { value: string, expiresAt: number|null }>} */
     this._store = new Map();
-    // Periodic eviction of expired keys (every 60s, non-blocking)
     setInterval(() => this._evict(), 60_000).unref();
   }
 
@@ -36,7 +31,6 @@ class MemoryRedis {
   }
 
   async set(key, value, ...args) {
-    // Supports: set(k,v), set(k,v,'EX',ttl), set(k,v,'EX',ttl,'NX')
     let expiresAt = null;
     let nx = false;
     for (let i = 0; i < args.length; i++) {
@@ -103,18 +97,29 @@ class MemoryRedis {
     return result;
   }
 
-  on() { return this; } // no-op event emitter shim
+  on() { return this; }
   async quit() { return 'OK'; }
 }
 
 let instance;
+let isRealRedis = false;
 
-/**
- * Returns the in-memory Redis-compatible singleton.
- * @returns {MemoryRedis}
- */
 function getRedis() {
-  if (!instance) instance = new MemoryRedis();
+  const redisUrl = process.env.REDIS_URL;
+  const useRealRedis = redisUrl && redisUrl.startsWith('redis://valkey');
+  
+  if (useRealRedis) {
+    if (!isRealRedis) {
+      instance = new Redis(redisUrl);
+      isRealRedis = true;
+    }
+  } else {
+    if (!instance) {
+      instance = new MemoryRedis();
+      isRealRedis = false;
+    }
+  }
+  
   return instance;
 }
 

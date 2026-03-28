@@ -3,10 +3,13 @@
 const REQUIRED = [
   'DATABASE_URL',
   'QDRANT_URL',
-  'REDIS_URL',
   'OPENAI_API_KEY',
   'JWT_ACCESS_SECRET',
   'JWT_REFRESH_SECRET',
+];
+
+const OPTIONAL = [
+  'REDIS_URL',
 ];
 
 const REQUIRED_PROD = [

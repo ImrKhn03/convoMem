@@ -309,8 +309,6 @@ curl "http://localhost:8000/api/entities/search?q=google" \
 | `DELETE` | `/api/memories/:id` | Delete a memory |
 | `POST` | `/api/memories/:id/feedback` | Submit feedback on a memory |
 | `GET` | `/api/entities` | List extracted entities |
-| `GET` | `/api/entities/graph` | Get entity relationship graph |
-| `GET` | `/api/entities/graph/3d` | Get 3D graph data |
 | `GET` | `/api/stats` | Get usage statistics |
 | `POST` | `/api/user-webhooks` | Register a webhook |
 | `GET` | `/api/extension/config` | Get extension configuration |

@@ -1,6 +1,20 @@
 'use strict';
 
-const selectors = require('../config/selectors.json');
+const selectors = {
+  version: '1.0.0',
+  chatgpt: {
+    conversation: "[data-testid='conversation-turn']",
+    userMessage: "[data-message-author='user']",
+    assistantMessage: "[data-message-author='assistant']",
+    inputBox: '#prompt-textarea'
+  },
+  claude: {
+    conversation: "[data-testid='conversation-message']",
+    userMessage: "[data-role='user']",
+    assistantMessage: "[data-role='assistant']",
+    inputBox: "[contenteditable='true']"
+  }
+};
 
 /**
  * @swagger

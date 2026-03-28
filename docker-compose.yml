@@ -1,84 +1,24 @@
-version: '3.9'
-
 services:
   api:
     build:
       context: ./apps/api
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8000"
     env_file:
       - ./apps/api/.env
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://convomem:convomem@postgres:5432/convomem_db
-      - QDRANT_URL=http://qdrant:6333
-      - REDIS_URL=redis://valkey:6379
-    depends_on:
-      postgres:
-        condition: service_healthy
-      qdrant:
-        condition: service_healthy
-      valkey:
-        condition: service_healthy
-    networks:
-      - convomem-net
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:16-alpine
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: convomem
-      POSTGRES_PASSWORD: convomem
-      POSTGRES_DB: convomem_db
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U convomem -d convomem_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - convomem-net
-    restart: unless-stopped
-
-  qdrant:
-    image: qdrant/qdrant:v1.10.0
-    ports:
-      - "6333:6333"
-    volumes:
-      - qdrant-data:/qdrant/storage
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:6333/healthz || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - convomem-net
-    restart: unless-stopped
-
-  valkey:
-    image: valkey/valkey:8-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - valkey-data:/data
-    healthcheck:
-      test: ["CMD", "valkey-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - convomem-net
+      - NODE_ENV=development
+      - PORT=8000
+      - DATABASE_URL=postgresql://convomem:convomem@host.docker.internal:5432/convomem_db
+      - QDRANT_URL=http://host.docker.internal:6333
+      - REDIS_URL=redis://host.docker.internal:6379
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    network_mode: bridge
     restart: unless-stopped
 
 volumes:
   postgres-data:
   qdrant-data:
   valkey-data:
-
-networks:
-  convomem-net:
-    driver: bridge

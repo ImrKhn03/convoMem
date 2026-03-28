@@ -1,0 +1,103 @@
+<svg width="830" height="200" viewBox="0 0 830 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="830" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#080d14"/>
+      <stop offset="100%" stop-color="#0e1b2e"/>
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#00D4FF" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#00D4FF" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#9B6BFF" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#9B6BFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="830" height="200" rx="16" fill="url(#bgGrad)"/>
+
+  <!-- Subtle border -->
+  <rect width="830" height="200" rx="16" fill="none" stroke="#1a2a40" stroke-width="1"/>
+
+  <!-- Corner accents -->
+  <path d="M0 55 Q0 16 16 16 L55 16" fill="none" stroke="#00D4FF" stroke-width="1" opacity="0.18" stroke-dasharray="5 4"/>
+  <path d="M830 145 Q830 184 814 184 L775 184" fill="none" stroke="#9B6BFF" stroke-width="1" opacity="0.18" stroke-dasharray="5 4"/>
+
+  <!-- Background neural graph (far right, very subtle) -->
+  <g opacity="0.055" fill="#00D4FF">
+    <circle cx="640" cy="44" r="2.5"/>
+    <circle cx="695" cy="78" r="2"/>
+    <circle cx="748" cy="48" r="2.5"/>
+    <circle cx="675" cy="128" r="2"/>
+    <circle cx="755" cy="138" r="2.5"/>
+    <circle cx="805" cy="88" r="2"/>
+  </g>
+  <g stroke="#00D4FF" stroke-width="0.8" opacity="0.04" fill="none">
+    <line x1="640" y1="44" x2="695" y2="78"/>
+    <line x1="695" y1="78" x2="748" y2="48"/>
+    <line x1="695" y1="78" x2="675" y2="128"/>
+    <line x1="748" y1="48" x2="755" y2="138"/>
+    <line x1="675" y1="128" x2="755" y2="138"/>
+    <line x1="755" y1="138" x2="805" y2="88"/>
+  </g>
+
+  <!-- ===== LOGO MARK ===== -->
+
+  <!-- Bubble 1: left, cyan -->
+  <rect x="52" y="36" width="98" height="66" rx="14" fill="#060e1c" stroke="#00D4FF" stroke-width="1.8"/>
+  <!-- Tail -->
+  <path d="M66,102 L50,130 L92,102" fill="#060e1c"/>
+  <path d="M66,102 L50,130" fill="none" stroke="#00D4FF" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M50,130 L92,102" fill="none" stroke="#00D4FF" stroke-width="1.8" stroke-linejoin="round"/>
+  <line x1="67" y1="101" x2="91" y2="101" stroke="#060e1c" stroke-width="3.5"/>
+
+  <!-- Bubble 2: right, violet -->
+  <rect x="99" y="70" width="98" height="66" rx="14" fill="#09061c" stroke="#9B6BFF" stroke-width="1.8"/>
+  <!-- Tail -->
+  <path d="M182,136 L210,158 L172,136" fill="#09061c"/>
+  <path d="M182,136 L210,158" fill="none" stroke="#9B6BFF" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M210,158 L172,136" fill="none" stroke="#9B6BFF" stroke-width="1.8" stroke-linejoin="round"/>
+  <line x1="173" y1="135" x2="181" y2="135" stroke="#09061c" stroke-width="3.5"/>
+
+  <!-- Node glow -->
+  <circle cx="128" cy="88" r="26" fill="url(#nodeGlow)"/>
+
+  <!-- Node -->
+  <circle cx="128" cy="88" r="7.5" fill="#00D4FF"/>
+  <circle cx="128" cy="88" r="4" fill="#e0f8ff"/>
+
+  <!-- Satellite dots + lines -->
+  <circle cx="78" cy="68" r="3" fill="#00D4FF" opacity="0.55"/>
+  <circle cx="96" cy="56" r="2" fill="#00D4FF" opacity="0.3"/>
+  <circle cx="152" cy="108" r="3" fill="#9B6BFF" opacity="0.55"/>
+  <circle cx="168" cy="84" r="2" fill="#9B6BFF" opacity="0.3"/>
+
+  <line x1="78" y1="68" x2="121" y2="86" stroke="#00D4FF" stroke-width="1.2" opacity="0.38"/>
+  <line x1="96" y1="56" x2="123" y2="83" stroke="#00D4FF" stroke-width="0.8" opacity="0.22"/>
+  <line x1="135" y1="91" x2="152" y2="108" stroke="#9B6BFF" stroke-width="1.2" opacity="0.38"/>
+  <line x1="132" y1="88" x2="168" y2="84" stroke="#9B6BFF" stroke-width="0.8" opacity="0.22"/>
+
+  <!-- ===== TEXT ===== -->
+
+  <!-- Main wordmark -->
+  <text x="248" y="114" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="60" font-weight="800" letter-spacing="-2">
+    <tspan fill="white">convo</tspan><tspan fill="#00D4FF">Mem</tspan>
+  </text>
+
+  <!-- Divider line -->
+  <rect x="248" y="126" width="340" height="1" fill="url(#accentLine)" rx="1"/>
+
+  <!-- Tagline -->
+  <text x="250" y="150" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" fill="#4a7799" letter-spacing="3.2" font-weight="400">PERSISTENT MEMORY FOR AI ASSISTANTS</text>
+
+  <!-- "open source" pill -->
+  <rect x="250" y="162" width="88" height="20" rx="10" fill="#0a1929" stroke="#00D4FF" stroke-width="0.8" opacity="0.7"/>
+  <text x="258" y="176" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" fill="#00D4FF" letter-spacing="0.8" font-weight="500">open source</text>
+
+  <!-- "self-hosted" pill -->
+  <rect x="346" y="162" width="88" height="20" rx="10" fill="#120a29" stroke="#9B6BFF" stroke-width="0.8" opacity="0.7"/>
+  <text x="354" y="176" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" fill="#9B6BFF" letter-spacing="0.8" font-weight="500">self-hosted</text>
+</svg>

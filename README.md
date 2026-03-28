@@ -1,22 +1,27 @@
 <p align="center">
-  <h1 align="center">ConvoMem</h1>
-  <p align="center"><strong>Persistent memory for AI assistants — self-hosted, open source.</strong></p>
+  <img src="docs/banner.svg" alt="ConvoMem — Persistent Memory for AI Assistants" width="830"/>
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache 2.0 License"></a>
-  <a href="https://hub.docker.com"><img src="https://img.shields.io/badge/docker-ready-blue.svg" alt="Docker"></a>
-  <img src="https://img.shields.io/badge/node-%3E%3D20-green.svg" alt="Node 20+">
-  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square" alt="Apache 2.0"/></a>
+  <img src="https://img.shields.io/badge/docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"/>
+  <img src="https://img.shields.io/badge/node-%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node 20+"/>
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome"/>
+  <img src="https://img.shields.io/badge/postgres-powered-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
+  <img src="https://img.shields.io/badge/vector_search-Qdrant-DC244C?style=flat-square" alt="Qdrant"/>
 </p>
 
----
+<br/>
 
-Your AI forgets everything the moment a session ends. ConvoMem fixes that.
+> **Your AI forgets everything the moment a session ends. ConvoMem fixes that.**
 
 Send it a conversation — it extracts the facts worth keeping, stores them as vector embeddings, and returns the most relevant ones as ready-to-inject context for your next prompt. Your AI starts knowing who you are, what you're building, and how you like to work.
 
 One `docker compose up` gets you a full memory API with background processing, vector search, auth, an MCP server, a Chrome extension, and an SDK — no assembly required.
+
+<br/>
+
+---
 
 ## How It Works
 
@@ -31,18 +36,59 @@ Conversation ──▶ Capture ──▶ Extract ──▶ Filter ──▶ Stor
 
 **Lookup** — GET by topic. ConvoMem finds the most relevant memories via vector similarity and returns formatted context you can prepend directly to your next LLM prompt.
 
+<br/>
+
+---
+
 ## What's Included
 
-- **Automatic fact extraction** — pulls out preferences, decisions, goals, and personal info from raw conversation text
-- **Smart filtering** — short-lived context expires automatically; important facts persist
-- **Deduplication** — same fact won't be stored twice
-- **Entity extraction** — people, places, organizations, and technologies are identified and linked across memories
-- **PII protection** — SSNs, credit card numbers, and API keys are blocked before anything is stored
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🧠 Memory
+- **Automatic fact extraction** — LLM pulls preferences, decisions, and goals from raw conversation text
+- **Smart deduplication** — same fact won't be stored twice
+- **Smart filtering** — short-lived context expires; important facts persist
+
+</td>
+<td width="33%" valign="top">
+
+### 🔍 Search & Entities
+- **Semantic vector search** — via Qdrant, not just keyword matching
+- **Entity extraction** — people, places, orgs, and technologies linked across memories
+- **Full-text search** — fast fallback for exact queries
+
+</td>
+<td width="33%" valign="top">
+
+### 🔒 Security & Integrations
+- **PII protection** — SSNs, card numbers, and API keys blocked before storage
 - **MCP server** — native integration with Claude Desktop and Cursor
-- **Chrome extension** — automatically captures context from ChatGPT and Claude.ai
-- **Node.js SDK** — zero-dependency client package
-- **Webhooks** — real-time events when memories are captured or updated
-- **Works with any LLM** — ChatGPT, Claude, Cursor, Copilot, Gemini, or your own stack
+- **Chrome extension** — captures context from ChatGPT and Claude.ai automatically
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+---
+
+## Works With
+
+<p>
+  <img src="https://img.shields.io/badge/ChatGPT-74aa9c?style=flat-square&logo=openai&logoColor=white" alt="ChatGPT"/>
+  <img src="https://img.shields.io/badge/Claude-D97757?style=flat-square&logo=anthropic&logoColor=white" alt="Claude"/>
+  <img src="https://img.shields.io/badge/Cursor-000000?style=flat-square&logo=cursor&logoColor=white" alt="Cursor"/>
+  <img src="https://img.shields.io/badge/Copilot-0078D4?style=flat-square&logo=github&logoColor=white" alt="GitHub Copilot"/>
+  <img src="https://img.shields.io/badge/Gemini-4285F4?style=flat-square&logo=google&logoColor=white" alt="Gemini"/>
+  <img src="https://img.shields.io/badge/Any_LLM-6B6B6B?style=flat-square" alt="Any LLM"/>
+</p>
+
+<br/>
+
+---
 
 ## Quick Start
 
@@ -66,7 +112,7 @@ curl -X POST http://localhost:8000/api/auth/register \
   -d '{"email": "you@example.com", "password": "your-password", "name": "Your Name"}'
 ```
 
-The API will be running at `http://localhost:8000` with Swagger docs at `http://localhost:8000/api/docs`.
+The API runs at `http://localhost:8000` · Swagger docs at `http://localhost:8000/api/docs`
 
 ### Environment Variables
 
@@ -84,9 +130,13 @@ PORT=8000                               # Default: 8000
 CORS_ORIGINS=http://localhost:3000      # Comma-separated allowed origins
 ```
 
+<br/>
+
+---
+
 ## Integrations
 
-### MCP Server (Claude Desktop / Cursor)
+### MCP Server — Claude Desktop / Cursor
 
 The MCP server lets Claude or Cursor automatically look up and capture memories.
 
@@ -113,11 +163,16 @@ Add to your Claude Desktop config (`claude_desktop_config.json`):
 ```
 
 Available MCP tools:
-- `convomem_lookup` — Find relevant memories for a topic
-- `convomem_capture` — Save facts from a conversation
-- `convomem_feedback` — Mark memories as helpful/unhelpful
 
-### SDK (npm package)
+| Tool | Description |
+|------|-------------|
+| `convomem_lookup` | Find relevant memories for a topic |
+| `convomem_capture` | Save facts from a conversation |
+| `convomem_feedback` | Mark memories as helpful or unhelpful |
+
+---
+
+### SDK
 
 ```bash
 npm install convomem-sdk
@@ -132,35 +187,38 @@ const client = new ConvoMemClient({
 });
 
 // Capture memories from a conversation
-const result = await client.capture({
+await client.capture({
   messages: [
     { role: 'user', content: 'I prefer dark mode and use VS Code' },
     { role: 'assistant', content: 'Noted! I\'ll remember your preferences.' },
   ],
 });
 
-// Look up relevant memories
+// Look up relevant memories by topic
 const context = await client.lookup({ topic: 'editor preferences' });
-console.log(context);
 // => "User prefers dark mode. User's primary editor is VS Code."
 
 // Search memories
 const memories = await client.search({ query: 'dark mode' });
 ```
 
+---
+
 ### Chrome Extension
 
-The Chrome extension automatically captures conversations from ChatGPT and Claude web interfaces.
+Automatically captures conversations from ChatGPT and Claude web interfaces.
 
 1. Go to `chrome://extensions/`
-2. Enable "Developer mode"
-3. Click "Load unpacked" and select the `extension/` directory
+2. Enable **Developer mode**
+3. Click **Load unpacked** → select the `extension/` directory
 4. Click the ConvoMem icon and enter your API key
+
+---
 
 ### REST API
 
 ```bash
-# Capture memories
+# Capture memories from a conversation
 curl -X POST http://localhost:8000/api/memories/capture \
   -H "X-API-Key: sk-cm-your-key" \
   -H "Content-Type: application/json" \
@@ -192,6 +250,10 @@ curl "http://localhost:8000/api/entities/search?q=google" \
   -H "X-API-Key: sk-cm-your-key"
 ```
 
+<br/>
+
+---
+
 ## Architecture
 
 ```
@@ -216,7 +278,7 @@ curl "http://localhost:8000/api/entities/search?q=google" \
               ▼
         ┌──────────┐
         │ pg-boss  │
-        │ (Jobs)   │
+        │  (Jobs)  │
         └──────────┘
 ```
 
@@ -228,84 +290,89 @@ curl "http://localhost:8000/api/entities/search?q=google" \
 | **Valkey** | Caching (lookups, embeddings), rate limiting, budget tracking |
 | **pg-boss** | Background job queue (capture processing, webhook delivery) |
 
+<br/>
+
+---
+
 ## API Reference
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | Register a new user |
-| POST | `/api/auth/login` | Login, get JWT tokens |
-| POST | `/api/auth/refresh` | Refresh access token |
-| POST | `/api/auth/api-keys` | Create an API key |
-| POST | `/api/memories/capture` | Capture memories from conversation |
-| GET | `/api/memories/lookup` | Look up relevant memories by topic |
-| GET | `/api/memories` | List all memories (paginated) |
-| GET | `/api/memories/search` | Full-text search memories |
-| DELETE | `/api/memories/:id` | Delete a memory |
-| POST | `/api/memories/:id/feedback` | Submit feedback on a memory |
-| GET | `/api/entities` | List extracted entities |
-| GET | `/api/entities/graph` | Get entity relationship graph |
-| GET | `/api/entities/graph/3d` | Get 3D graph data |
-| GET | `/api/stats` | Get usage statistics |
-| POST | `/api/user-webhooks` | Register a webhook |
-| GET | `/api/extension/config` | Get extension configuration |
+| `POST` | `/api/auth/register` | Register a new user |
+| `POST` | `/api/auth/login` | Login, get JWT tokens |
+| `POST` | `/api/auth/refresh` | Refresh access token |
+| `POST` | `/api/auth/api-keys` | Create an API key |
+| `POST` | `/api/memories/capture` | Capture memories from conversation |
+| `GET` | `/api/memories/lookup` | Look up relevant memories by topic |
+| `GET` | `/api/memories` | List all memories (paginated) |
+| `GET` | `/api/memories/search` | Full-text search memories |
+| `DELETE` | `/api/memories/:id` | Delete a memory |
+| `POST` | `/api/memories/:id/feedback` | Submit feedback on a memory |
+| `GET` | `/api/entities` | List extracted entities |
+| `GET` | `/api/entities/graph` | Get entity relationship graph |
+| `GET` | `/api/entities/graph/3d` | Get 3D graph data |
+| `GET` | `/api/stats` | Get usage statistics |
+| `POST` | `/api/user-webhooks` | Register a webhook |
+| `GET` | `/api/extension/config` | Get extension configuration |
 
-Full Swagger documentation available at `/api/docs` when the server is running.
+Full Swagger docs available at `/api/docs` when the server is running.
+
+<br/>
+
+---
 
 ## Self-Hosting
 
 ### Minimum Requirements
 
-- 2 CPU cores, 4GB RAM
+- 2 CPU cores, 4 GB RAM
 - Docker and Docker Compose
 - An OpenAI API key (for `gpt-4o-mini` and `text-embedding-3-small`)
 
 ### Production Deployment
 
 ```bash
-# Use the production compose file (includes nginx + SSL)
+# nginx + SSL (Let's Encrypt / Certbot) included
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-The production setup includes:
-- **nginx** reverse proxy with SSL (Let's Encrypt / Certbot)
-- Health checks on all services
-- Resource limits (CPU + memory)
-- Only ports 80/443 exposed publicly
+The production setup includes nginx reverse proxy with SSL, health checks on all services, CPU + memory resource limits, and only ports 80/443 exposed publicly.
 
 ### Database Migrations
 
 ```bash
-# Generate Prisma client
-npx prisma generate
-
-# Run migrations
-npx prisma migrate deploy
-
-# Open Prisma Studio (GUI)
-npx prisma studio
+npx prisma generate        # Generate Prisma client
+npx prisma migrate deploy  # Run migrations
+npx prisma studio          # Open GUI
 ```
+
+<br/>
+
+---
 
 ## Comparison
 
-> Accurate as of March 2026. Mem0: ~50K stars. Graphiti (Zep): ~20K stars.
+> Accurate as of March 2026. Mem0: ~50K stars · Graphiti (Zep): ~20K stars.
 
-| Feature | ConvoMem OSS | Mem0 OSS | Graphiti (Zep) | Letta |
-|---------|-------------|----------|----------------|-------|
-| **Deployable REST API** | ✅ Full server | ⚠️ SDK + basic server | ⚠️ Library only | ✅ |
-| **Built-in auth + users** | ✅ JWT + API keys | ❌ | ❌ | ⚠️ Token only |
-| **Docker Compose (one command)** | ✅ | ⚠️ Partial | ⚠️ Requires graph DB | ✅ |
-| **Automatic fact extraction** | ✅ | ✅ | ✅ | ✅ |
-| **Memory deduplication** | ✅ Topic key | ✅ LLM-driven | ✅ Entity resolution | ✅ |
-| **Entity extraction** | ✅ | ✅ | ✅ | ❌ |
-| **Entity graph** | ❌ Cloud only | ⚠️ Pro plan only | ✅ (FalkorDB/Neo4j) | ❌ |
-| **Temporal reasoning** | ❌ Cloud only | ✅ Basic | ✅ Core feature | ❌ |
-| **MCP server** | ✅ | ✅ (mem0-mcp) | ✅ (Graphiti MCP 1.0) | ⚠️ Community only |
-| **Chrome extension** | ✅ | ✅ (OpenMemory) | ❌ | ❌ |
-| **SDK** | Node.js | Python + Node.js | Python | Python + TypeScript |
-| **Multi-LLM support** | ❌ OpenAI only | ✅ OpenAI, Anthropic, Groq, Ollama | ✅ OpenAI, Anthropic, Gemini, Ollama | ✅ Model-agnostic |
-| **Self-hostable** | ✅ | ✅ | ✅ | ✅ |
+| Feature | **ConvoMem OSS** | Mem0 OSS | Graphiti (Zep) | Letta |
+|---------|:-----------:|:--------:|:--------------:|:-----:|
+| Deployable REST API | ✅ Full server | ⚠️ SDK + basic | ⚠️ Library only | ✅ |
+| Built-in auth + users | ✅ JWT + API keys | ❌ | ❌ | ⚠️ Token only |
+| Docker Compose (one command) | ✅ | ⚠️ Partial | ⚠️ Needs graph DB | ✅ |
+| Automatic fact extraction | ✅ | ✅ | ✅ | ✅ |
+| Memory deduplication | ✅ Topic key | ✅ LLM-driven | ✅ Entity res. | ✅ |
+| Entity extraction | ✅ | ✅ | ✅ | ❌ |
+| Entity graph | ❌ Cloud only | ⚠️ Pro only | ✅ FalkorDB/Neo4j | ❌ |
+| Temporal reasoning | ❌ Cloud only | ✅ Basic | ✅ Core feature | ❌ |
+| MCP server | ✅ | ✅ | ✅ | ⚠️ Community |
+| Chrome extension | ✅ | ✅ | ❌ | ❌ |
+| SDK | Node.js | Python + Node | Python | Python + TS |
+| Multi-LLM support | ❌ OpenAI only | ✅ Multi | ✅ Multi | ✅ Multi |
+| Self-hostable | ✅ | ✅ | ✅ | ✅ |
 
 **The key difference:** ConvoMem ships as a complete, ready-to-run service. Auth, background jobs, caching, webhooks, MCP server, and Chrome extension all work together out of the box with a single `docker compose up`. Mem0 OSS is a library — you build the server around it. Graphiti requires running and managing a separate graph database. ConvoMem is the only option that goes from zero to a fully functional memory API in under five minutes.
+
+<br/>
 
 ---
 
@@ -313,36 +380,44 @@ npx prisma studio
 
 [ConvoMem Cloud](https://convomem.com) is a managed hosted version with additional capabilities on top of the open-source core.
 
-### What Cloud adds
+<table>
+<tr>
+<td width="33%" valign="top">
 
 **Higher quality memories**
-- Significantly higher extraction accuracy — fewer hallucinated or low-confidence facts stored
+- Significantly higher extraction accuracy
 - Smarter deduplication — catches near-duplicates the OSS topic-key match misses
-- Better relevance ranking — lookups return more useful context, less noise
+- Better relevance ranking — less noise in lookups
+
+</td>
+<td width="33%" valign="top">
 
 **Richer knowledge graph**
-- Entity relationship graph — people, places, organizations, and technologies linked across memories
-- Visual graph explorer — interactive UI to browse and query your knowledge graph
-- Workspace organization — separate memory spaces per project, client, or context
+- Entity relationship graph across memories
+- Visual graph explorer — interactive UI
+- Workspace organization per project, client, or context
+
+</td>
+<td width="33%" valign="top">
 
 **For teams building AI products**
-- Customer memory profiles — give every end-user of your product their own persistent memory. Attach memories to your customers, not just your own account
-- Org-level multi-tenancy — isolated memory spaces per organization with role-based access (Owner / Admin / Developer)
-- Conversation insights — automatically surface patterns and signals across customer conversations
-- Trend analysis — track how topics evolve over time across thousands of conversations
-- Audit logging — full access and modification trail for compliance
-- Org webhooks — real-time events at the organization level for customer memory changes
+- Customer memory profiles — persistent memory per end-user
+- Org-level multi-tenancy with RBAC
+- Conversation insights, trend analysis, audit logging
 
-**Managed infrastructure**
-- No Postgres, Qdrant, or Valkey to run yourself
-- High availability with uptime SLA
-- Dedicated support
+</td>
+</tr>
+</table>
 
 [Sign up for early access → convomem.com](https://convomem.com)
 
+<br/>
+
+---
+
 ## Contributing
 
-Contributions are welcome! Here's how:
+Contributions are welcome!
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -356,6 +431,10 @@ Please make sure tests pass before submitting:
 npm test
 ```
 
+<br/>
+
+---
+
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+Apache License 2.0 — see the [LICENSE](LICENSE) file for details.

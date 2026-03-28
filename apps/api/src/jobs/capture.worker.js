@@ -10,7 +10,7 @@ const logger = require('../utils/logger');
  * @param {import('pg-boss')} boss
  */
 async function startCaptureWorker(boss) {
-  await boss.work(QUEUES.CAPTURE, { teamSize: 5, teamConcurrency: 5 }, async (job) => {
+  await boss.work(QUEUES.CAPTURE, { teamSize: 5, teamConcurrency: 5 }, async ([job]) => {
     const { userId, captureId, messages, opts } = job.data;
     logger.info({ jobId: job.id, userId, captureId }, 'Processing capture job');
 

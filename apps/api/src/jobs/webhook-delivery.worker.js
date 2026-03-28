@@ -62,7 +62,7 @@ async function deliverWebhook(url, secret, payload) {
  * @param {import('pg-boss')} boss
  */
 async function startWebhookDeliveryWorker(boss) {
-  await boss.work(QUEUES.WEBHOOK, { teamSize: 10, teamConcurrency: 10 }, async (job) => {
+  await boss.work(QUEUES.WEBHOOK, { teamSize: 10, teamConcurrency: 10 }, async ([job]) => {
     const { webhookId, url, secret, event, payload } = job.data;
     const db = getDb();
 
